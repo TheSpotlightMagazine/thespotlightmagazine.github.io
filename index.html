@@ -1,0 +1,161 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <!-- SEO Meta Tags -->
+  <meta name="title" content="The Spotlight Magazine 9D">
+  <meta name="description" content="The official online edition of The Spotlight Magazine 9D – created by Grade 9D students of Manor House International School. Explore interactive PDFs, topics, and presentations.">
+  <meta name="keywords" content="Spotlight Magazine, 9D, Manor House, school magazine, The Spotlight Magazine 9D, interactive magazine, student magazine">
+  <meta name="author" content="The Spotlight Magazine 9D Team">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="The Spotlight Magazine 9D">
+  <meta property="og:description" content="An interactive digital magazine by Grade 9D students of Manor House International School.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://thespotlightmagazine.github.io/9d/">
+  <meta property="og:image" content="https://thespotlightmagazine.github.io/9d/The%20Spotlight%20Magazine.png">
+
+  <title>The Spotlight Magazine 9D</title>
+
+  <!-- Background audio -->
+  <audio autoplay loop>
+    <source src="bg audio.mp3" type="audio/mpeg">
+  </audio>
+
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#0f1724;
+      --accent:#ffd166;
+      --glass: rgba(255,255,255,0.03);
+      --maxw:1100px;
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,Segoe UI,system-ui,Arial;color:#e6eef8;
+      background:radial-gradient(1200px 600px at 10% 10%, #071026 0%, transparent 10%),
+      radial-gradient(1000px 400px at 90% 90%, #071016 0%, transparent 12%), var(--bg);}
+    
+    header{
+      display:flex;align-items:center;gap:20px;padding:28px 24px;max-width:var(--maxw);margin:24px auto;
+      border-radius:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      box-shadow:0 8px 30px rgba(2,6,23,0.6);backdrop-filter:blur(6px);position:relative;overflow:hidden;
+      animation:slideIn .9s cubic-bezier(.2,.9,.2,1) both;
+    }
+    header img{height:72px;border-radius:12px;object-fit:contain;filter:drop-shadow(0 8px 20px rgba(0,0,0,0.6));transform:translateY(-6px);}
+
+    .orb{position:absolute;border-radius:50%;opacity:0.15;mix-blend-mode:screen;animation:float 6s ease-in-out infinite;}
+    .orb.one{width:220px;height:220px;background:linear-gradient(135deg,var(--accent),#ffb86b);left:-80px;top:-60px}
+    .orb.two{width:140px;height:140px;background:linear-gradient(135deg,#8be9fd,#6c8cff);right:-40px;bottom:-40px;animation-duration:8s}
+
+    main{max-width:var(--maxw);margin:34px auto;padding:24px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:36px;border-radius:var(--radius);box-shadow:0 10px 40px rgba(2,6,23,0.6);}
+    .btn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:12px}
+    .spot-btn{position:relative;display:flex;align-items:center;justify-content:center;padding:18px 22px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), var(--glass));color:#fff;text-decoration:none;font-weight:700;font-size:15px;border:1px solid rgba(255,255,255,0.04);overflow:hidden;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;text-align:center}
+    .spot-btn:active{transform:scale(.98)}
+    .spot-btn::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% -20%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 10%, transparent 28%);transform:scale(0);transition:transform .45s cubic-bezier(.2,.9,.2,1);opacity:0.95}
+    .spot-btn:hover::before{transform:scale(1.8);opacity:1}
+    .spot-btn::after{content:'';position:absolute;left:-50%;top:-50%;width:200%;height:200%;background:conic-gradient(from 180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.01) 45%, transparent 60%);transform:rotate(30deg) translateY(-40%);opacity:0;transition:opacity .35s,transform .5s}
+    .spot-btn:hover::after{opacity:1;transform:rotate(0deg) translateY(0)}
+    .page{display:none;opacity:0;transform:translateY(10px);transition:all .45s ease}
+    .page.active{display:block;opacity:1;transform:none}
+    .topics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+    .accordion{margin-top:12px}
+    .acc-item{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:12px;padding:12px;margin-bottom:10px;cursor:pointer}
+    .acc-item h3{margin:0;display:flex;align-items:center;justify-content:space-between}
+    .acc-item p{margin:8px 0 0;max-height:0;overflow:hidden;transition:max-height .35s ease;padding-right:6px}
+    .acc-item.open p{max-height:400px}
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-14px)}100%{transform:translateY(0)}}
+    @keyframes slideIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+    .curtain{position:fixed;inset:0;background:linear-gradient(180deg,#000c,transparent);pointer-events:none;opacity:0;transition:opacity .5s}
+    .curtain.on{opacity:1}
+    @media (max-width:560px){header{padding:18px} header img{height:56px} .spot-btn{padding:14px}}
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="bg audio.mp3" type="audio/mpeg">
+  </audio>
+  <div class="curtain" id="curtain"></div>
+  <header>
+    <img src="The spotlight magazine.png" alt="The Spotlight Magazine logo" id="logo">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+  </header>  <main>
+    <div class="card" role="main">
+      <section id="home" class="page active">
+        <h2>The Spotlight Magazine 9D</h2>
+        <div class="btn-grid" style="margin-top:24px">
+          <a href="The Spotlight Magazine.pdf" class="spot-btn" id="openPdf" target="_blank" rel="noopener noreferrer">The Spotlight Magazine Pdf</a>
+          <button class="spot-btn" id="openTopics">The Spotlight Magazine topical Pdf</button>
+          <a href="The Spotlight Magazine.ppt" class="spot-btn" target="_blank" id="openPpt" rel="noopener noreferrer">The Presentation</a>
+          <button class="spot-btn" id="openAbout">About the Magazine</button>
+        </div>
+      </section><section id="topics" class="page">
+    <h2>Topics</h2>
+    <div class="topics" style="margin-top:12px">
+      <a class="spot-btn" href="topic1.pdf" target="_blank" rel="noopener noreferrer">Topic 1</a>
+      <a class="spot-btn" href="topic2.pdf" target="_blank" rel="noopener noreferrer">Topic 2</a>
+      <a class="spot-btn" href="topic3.pdf" target="_blank" rel="noopener noreferrer">Topic 3</a>
+      <a class="spot-btn" href="topic4.pdf" target="_blank" rel="noopener noreferrer">Topic 4</a>
+      <a class="spot-btn" href="topic5.pdf" target="_blank" rel="noopener noreferrer">Topic 5</a>
+      <a class="spot-btn" href="topic6.pdf" target="_blank" rel="noopener noreferrer">Topic 6</a>
+    </div>
+    <div style="margin-top:18px">
+      <button class="spot-btn" id="backFromTopics">← Back</button>
+    </div>
+  </section>
+
+  <section id="about" class="page">
+    <h2>About the Magazine</h2>
+    <div class="accordion">
+      <div class="acc-item" data-index="1">
+        <h3>Title 1 <span>▾</span></h3>
+        <p>sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text</p>
+      </div>
+      <div class="acc-item" data-index="2">
+        <h3>Title 2 <span>▾</span></h3>
+        <p>sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text</p>
+      </div>
+      <div class="acc-item" data-index="3">
+        <h3>Title 3 <span>▾</span></h3>
+        <p>sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text</p>
+      </div>
+    </div>
+    <div style="margin-top:18px">
+      <button class="spot-btn" id="backFromAbout">← Back</button>
+    </div>
+  </section>
+</div>
+
+  </main>  <script>
+    const pages = {home:document.getElementById('home'), topics:document.getElementById('topics'), about:document.getElementById('about')};
+    const curtain = document.getElementById('curtain');
+    function showPage(name){
+      curtain.classList.add('on');
+      setTimeout(()=>{
+        Object.values(pages).forEach(p=>p.classList.remove('active'));
+        pages[name].classList.add('active');
+        curtain.classList.remove('on');
+        window.scrollTo({top:0,behavior:'smooth'});
+      },220);
+    }
+    document.getElementById('openTopics').addEventListener('click',()=>showPage('topics'));
+    document.getElementById('openAbout').addEventListener('click',()=>showPage('about'));
+    document.getElementById('backFromTopics').addEventListener('click',()=>showPage('home'));
+    document.getElementById('backFromAbout').addEventListener('click',()=>showPage('home'));
+
+    document.querySelectorAll('.acc-item').forEach(item=>{
+      item.addEventListener('click', ()=>{
+        item.classList.toggle('open');
+      })
+    });
+
+    const logo = document.getElementById('logo');
+    logo.style.opacity = 0;logo.style.transform='translateY(-8px) scale(.98)';
+    logo.addEventListener('load', ()=>{logo.style.transition='all .65s cubic-bezier(.2,.9,.2,1)';logo.style.opacity=1;logo.style.transform='translateY(0) scale(1)'});
+    setTimeout(()=>{logo.style.transition='all .65s cubic-bezier(.2,.9,.2,1)';logo.style.opacity=1;logo.style.transform='translateY(0) scale(1)';},600);
+  </script></body>
+</html>
