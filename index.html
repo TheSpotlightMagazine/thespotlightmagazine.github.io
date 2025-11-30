@@ -8,331 +8,251 @@
 <!-- Animations -->
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<!-- Creative Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 :root {
-  --bg-dark: #030014;
-  --glass: rgba(20, 20, 35, 0.4);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --primary: #00d2ff; /* Cyber Blue */
-  --secondary: #9d00ff; /* Neon Purple */
-  --accent: #ff0055; /* Hot Pink */
-  --text-main: #ffffff;
-  --text-mute: #a1a1aa;
+  --bg-void: #000000;
+  --glass-panel: rgba(20, 20, 20, 0.6);
+  --border-dim: rgba(255, 255, 255, 0.1);
+  --neon-cyan: #00f3ff;
+  --neon-gold: #ffd700;
+  --text: #eeeeee;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: 'Rajdhani', sans-serif;
-  background-color: var(--bg-dark);
-  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-void);
+  color: var(--text);
   overflow-x: hidden;
   min-height: 100vh;
-  /* Wide Animated Background */
-  background: radial-gradient(circle at top center, #1a0b2e 0%, #030014 70%);
+  /* Starfield Background */
+  background-image: 
+    radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+    radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+    radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+  background-size: 550px 550px, 350px 350px, 250px 250px;
+  background-position: 0 0, 40px 60px, 130px 270px;
+  animation: starMove 120s linear infinite;
 }
 
-/* Animated Background Mesh */
-.bg-mesh {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  z-index: -1;
-  background: 
-    linear-gradient(90deg, rgba(157, 0, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(rgba(157, 0, 255, 0.05) 1px, transparent 1px);
-  background-size: 80px 80px;
-  perspective: 1000px;
-  transform-style: preserve-3d;
-  animation: meshMove 60s linear infinite;
-}
-@keyframes meshMove {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(80px); }
+@keyframes starMove {
+  from { background-position: 0 0, 40px 60px, 130px 270px; }
+  to { background-position: 550px 550px, 390px 410px, 380px 520px; }
 }
 
-/* HEADER */
+/* HEADER STRIP */
 header {
+  position: fixed;
+  top: 0; left: 0; width: 100%;
+  height: 70px;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-dim);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 30px 5vw;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 10;
+  padding: 0 40px;
+  z-index: 100;
+  justify-content: space-between;
 }
 
-.logo-area img {
-  height: 60px;
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(157, 0, 255, 0.4);
-}
+header img { height: 40px; border-radius: 4px; }
+.header-title { font-family: 'Syncopate'; font-weight: 700; letter-spacing: 2px; font-size: 0.9rem; color: var(--neon-cyan); }
 
-.header-badge {
-  background: rgba(255,255,255,0.05);
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: 1px solid var(--glass-border);
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-/* MAIN CONTAINER - WIDE LAYOUT */
+/* MAIN LAYOUT - ULTRA WIDE */
 main {
-  width: 90vw; /* Uses 90% of screen width */
-  max-width: 1600px; /* Stops it getting too crazy on huge screens */
-  margin: 0 auto;
-  padding-top: 120px;
-  padding-bottom: 100px;
-  min-height: 100vh;
+  width: 96%; /* Takes up almost full screen */
+  max-width: 1800px; /* Cap only on massive monitors */
+  margin: 100px auto 60px auto; /* Space for fixed header */
 }
 
-.page { display: none; opacity: 0; transition: opacity 0.5s ease; }
+.page { display: none; opacity: 0; transition: opacity 0.4s ease; }
 .page.active { display: block; opacity: 1; }
 
-/* HOME HERO SECTION */
-.hero-content {
+/* HERO DASHBOARD */
+.hero-container {
   text-align: center;
-  padding: 50px 0;
+  margin-bottom: 40px;
 }
 
-h2 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 4vw; /* Responsive big text */
+h1 {
+  font-family: 'Syncopate', sans-serif;
+  font-weight: 700;
+  font-size: 3vw; /* Scales with width */
   text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
-  background: linear-gradient(to right, #fff, var(--primary));
+  margin: 20px 0 60px 0;
+  letter-spacing: 10px;
+  background: linear-gradient(90deg, #fff, #777);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 30px rgba(0, 210, 255, 0.3);
 }
 
-.subtitle {
-  font-size: 1.5rem;
-  color: var(--text-mute);
-  margin-bottom: 60px;
-  font-weight: 300;
-}
-
-/* WIDE MENU GRID */
-.wide-menu {
+/* WIDE MENU CARDS */
+.dashboard-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 0 20px;
 }
 
-.menu-card {
-  background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
-  border: 1px solid var(--glass-border);
-  padding: 50px 30px;
-  border-radius: 30px;
+.dash-btn {
+  background: var(--glass-panel);
+  border: 1px solid var(--border-dim);
+  padding: 40px 20px;
+  border-radius: 4px;
   text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
   text-decoration: none;
-  color: white;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: var(--text);
   position: relative;
   overflow: hidden;
 }
 
-.menu-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 4px;
-  background: linear-gradient(90deg, var(--secondary), var(--primary));
-  opacity: 0.5;
-  transition: 0.3s;
+.dash-btn:hover {
+  background: rgba(0, 243, 255, 0.05);
+  border-color: var(--neon-cyan);
+  transform: scale(0.98); /* Click feel */
 }
 
-.menu-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  background: rgba(255,255,255,0.08);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-}
+.dash-btn i { font-size: 2rem; margin-bottom: 15px; color: var(--neon-cyan); }
+.dash-btn span { display: block; font-family: 'Syncopate'; font-size: 0.8rem; font-weight: 700; }
+.dash-btn small { display: block; color: #666; font-size: 0.7rem; margin-top: 8px; }
 
-.menu-card i {
-  font-size: 3rem;
-  margin-bottom: 20px;
-  background: linear-gradient(to bottom, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.menu-card h3 { font-family: 'Orbitron'; font-size: 1.5rem; margin: 0; }
-.menu-card p { color: var(--text-mute); font-size: 1.1rem; margin-top: 10px; }
-
-/* TOPICS - PANORAMIC GRID */
-.topic-display {
+/* TOPIC GRID - 4 COLUMNS WIDE */
+.topic-grid-wide {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); /* Wider cards */
-  gap: 40px;
+  /* Small cards, many columns = Zoomed Out feel */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+  gap: 25px;
 }
 
-.topic-unit {
-  background: rgba(15, 15, 25, 0.6);
-  backdrop-filter: blur(15px);
-  border: 1px solid var(--glass-border);
-  border-radius: 24px;
-  overflow: hidden;
-  transition: 0.4s;
+.topic-mini-card {
+  background: linear-gradient(180deg, rgba(20,20,20,0.8), rgba(10,10,10,0.95));
+  border: 1px solid var(--border-dim);
+  border-radius: 8px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  transition: 0.3s;
   position: relative;
 }
 
-.topic-unit:hover {
-  border-color: var(--primary);
-  box-shadow: 0 0 30px rgba(0, 210, 255, 0.15);
-  transform: translateY(-5px);
+.topic-mini-card:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
 }
 
-/* Image Container - The "Stage" */
-.image-stage {
-  height: 250px;
+/* Image is small and contained */
+.mini-img-box {
   width: 100%;
-  background: radial-gradient(circle at center, rgba(0, 210, 255, 0.05) 0%, transparent 70%);
+  height: 160px; /* Shorter height */
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  margin-bottom: 15px;
+  background: radial-gradient(rgba(255,255,255,0.03), transparent 60%);
 }
 
-.image-stage img {
-  max-height: 80%;
-  max-width: 80%;
+.mini-img-box img {
+  max-height: 130px; /* Smaller image size */
+  max-width: 90%;
   object-fit: contain;
-  filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
-  animation: levitate 4s ease-in-out infinite; /* Floating Animation */
+  filter: grayscale(0.4);
+  transition: 0.4s;
 }
 
-@keyframes levitate {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-  100% { transform: translateY(0px); }
+.topic-mini-card:hover .mini-img-box img {
+  filter: grayscale(0);
+  transform: scale(1.1);
 }
 
-/* Topic Details */
-.topic-details {
-  padding: 25px;
-  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.4));
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid var(--glass-border);
+.topic-mini-card h3 {
+  font-family: 'Syncopate';
+  font-size: 1rem;
+  color: #fff;
+  margin: 0 0 15px 0;
 }
 
-.topic-details h3 {
-  margin: 0;
-  font-family: 'Orbitron';
-  font-size: 1.4rem;
-  color: var(--primary);
-}
-
-.open-btn {
+.access-btn {
+  width: 100%;
+  padding: 10px 0;
   background: transparent;
-  border: 1px solid var(--text-main);
-  color: var(--text-main);
-  padding: 10px 24px;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: 700;
-  transition: 0.3s;
-}
-
-.open-btn:hover {
-  background: var(--text-main);
-  color: black;
-  box-shadow: 0 0 20px rgba(255,255,255,0.4);
-}
-
-/* ABOUT TEXT */
-.about-container {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--glass-border);
-  border-radius: 30px;
-  padding: 60px;
-  text-align: center;
-  max-width: 900px;
-  margin: auto;
-}
-.about-container p { font-size: 1.4rem; line-height: 1.8; }
-
-/* NAVIGATION FOOTER (Inside Main) */
-.section-nav {
-  margin-top: 80px;
-  text-align: center;
-}
-.nav-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--text-mute);
-  text-decoration: none;
-  font-size: 1.2rem;
-  padding: 10px 20px;
-  border-radius: 10px;
-  transition: 0.3s;
-}
-.nav-back:hover {
-  background: rgba(255,255,255,0.1);
-  color: white;
-}
-
-/* BETA BUTTON */
-.beta-pill {
-  position: fixed;
-  bottom: 40px;
-  right: 40px;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(10px);
-  border: 2px solid var(--secondary);
-  color: var(--text-main);
-  padding: 15px 35px;
-  border-radius: 100px;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  text-decoration: none;
+  border: 1px solid #333;
+  color: #888;
+  font-size: 0.7rem;
+  text-transform: uppercase;
   letter-spacing: 2px;
+  text-decoration: none;
+  text-align: center;
   transition: 0.3s;
-  z-index: 999;
-  box-shadow: 0 0 15px rgba(157, 0, 255, 0.3);
+}
+
+.topic-mini-card:hover .access-btn {
+  background: var(--neon-cyan);
+  color: #000;
+  border-color: var(--neon-cyan);
+  font-weight: bold;
+}
+
+/* ABOUT SECTION */
+.wide-text-box {
+  max-width: 1000px;
+  margin: auto;
+  padding: 60px;
+  border-left: 2px solid var(--neon-cyan);
+  background: linear-gradient(90deg, rgba(0, 243, 255, 0.05), transparent);
+}
+.wide-text-box p { font-size: 1.1rem; line-height: 1.8; color: #ccc; }
+
+/* NAVIGATION */
+.nav-bar-bottom {
+  margin-top: 50px;
+  border-top: 1px solid #222;
+  padding-top: 20px;
   display: flex;
-  align-items: center;
-  gap: 12px;
+  justify-content: flex-start;
+}
+.back-link {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.back-link:hover { color: var(--neon-cyan); }
+
+/* BETA BADGE */
+.beta-tag {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background: var(--neon-gold);
+  color: #000;
+  font-weight: 800;
+  padding: 10px 30px;
+  font-size: 0.8rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  clip-path: polygon(20px 0, 100% 0, 100% 100%, 0% 100%);
+  transition: 0.3s;
+  z-index: 200;
+}
+.beta-tag:hover { padding-right: 40px; background: #fff; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .topic-grid-wide { grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); }
+  h1 { font-size: 1.8rem; letter-spacing: 4px; }
+  .dash-btn { padding: 30px; }
 }
 
-.beta-pill::before {
-  content: '';
-  width: 8px; height: 8px;
-  background: var(--accent);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--accent);
-  animation: blink 2s infinite;
-}
-
-.beta-pill:hover {
-  background: var(--secondary);
-  color: white;
-  box-shadow: 0 0 40px rgba(157, 0, 255, 0.6);
-  transform: scale(1.05);
-}
-
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-/* Mobile */
-@media(max-width: 768px) {
-  main { width: 95vw; padding-top: 100px; }
-  h2 { font-size: 2.5rem; }
-  .topic-display { grid-template-columns: 1fr; }
-  .beta-pill { padding: 12px 20px; bottom: 20px; right: 20px; font-size: 0.8rem; }
-}
 </style>
 </head>
 <body>
@@ -341,188 +261,163 @@ h2 {
   <source src="bg audio.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Background Mesh -->
-<div class="bg-mesh"></div>
-
 <header>
-  <div class="logo-area">
-    <img src="The spotlight magazine.png" alt="Logo">
-  </div>
-  <div class="header-badge">Vol. 9D</div>
+  <img src="The spotlight magazine.png" alt="Logo">
+  <div class="header-title">9D // SYSTEM</div>
 </header>
 
 <main>
-  
-  <!-- HOME SECTION -->
+
+  <!-- HOME -->
   <section id="home" class="page active">
-    <div class="hero-content" data-aos="zoom-out">
-      <h2>The Spotlight Magazine</h2>
-      <p class="subtitle">Intersection of Design, Future & Innovation</p>
+    <div class="hero-container" data-aos="fade-in">
+      <h1>The Spotlight Magazine</h1>
       
-      <div class="wide-menu">
-        <a href="The Spotlight Magazine.pdf" target="_blank" class="menu-card">
-          <i class="fa-solid fa-book-journal-whills"></i>
-          <h3>Full Issue</h3>
-          <p>Read the complete magazine</p>
+      <div class="dashboard-row">
+        <!-- Link 1 -->
+        <a href="The Spotlight Magazine.pdf" target="_blank" class="dash-btn">
+          <i class="fa-solid fa-expand"></i>
+          <span>Full View</span>
+          <small>Open Magazine PDF</small>
         </a>
         
-        <div class="menu-card" id="btnTopics" style="cursor: pointer;">
-          <i class="fa-solid fa-cubes-stacked"></i>
-          <h3>Topic Index</h3>
-          <p>Browse individual articles</p>
+        <!-- Link 2 -->
+        <div class="dash-btn" id="btnTopics">
+          <i class="fa-solid fa-table-cells"></i>
+          <span>Database</span>
+          <small>View Topics</small>
         </div>
 
-        <a href="The Spotlight Magazine.ppt" target="_blank" class="menu-card">
-          <i class="fa-solid fa-presentation-screen"></i>
-          <h3>Presentation</h3>
-          <p>View the slides</p>
+        <!-- Link 3 -->
+        <a href="The Spotlight Magazine.ppt" target="_blank" class="dash-btn">
+          <i class="fa-solid fa-display"></i>
+          <span>Slides</span>
+          <small>Presentation</small>
         </a>
 
-        <div class="menu-card" id="btnAbout" style="cursor: pointer;">
-          <i class="fa-solid fa-users-rays"></i>
-          <h3>About 9D</h3>
-          <p>Meet the team</p>
+        <!-- Link 4 -->
+        <div class="dash-btn" id="btnAbout">
+          <i class="fa-solid fa-fingerprint"></i>
+          <span>Origin</span>
+          <small>About 9D</small>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- TOPICS SECTION -->
+  <!-- TOPICS WIDE GRID -->
   <section id="topics" class="page">
-    <div data-aos="fade-down">
-      <h2 style="text-align:left; font-size: 3rem;">Topic Index</h2>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:30px;">
+      <h2 style="font-family:'Syncopate'; margin:0; font-size:1.5rem;">Index // Topics</h2>
+      <a href="#" class="back-link" onclick="goHome(event)">[ Close Index ]</a>
     </div>
-    
-    <div class="topic-display">
+
+    <div class="topic-grid-wide">
       
       <!-- Topic 1 -->
-      <div class="topic-unit" data-aos="fade-up">
-        <div class="image-stage">
-          <img src="icon topic1.png" alt="Tech Icon">
+      <div class="topic-mini-card" data-aos="fade-up">
+        <div class="mini-img-box">
+          <img src="icon topic1.png" alt="Tech">
         </div>
-        <div class="topic-details">
-          <h3>Technology</h3>
-          <a href="technology.pdf" target="_blank" class="open-btn">ACCESS</a>
-        </div>
+        <h3>Technology</h3>
+        <a href="technology.pdf" target="_blank" class="access-btn">Initialize</a>
       </div>
 
       <!-- Topic 2 -->
-      <div class="topic-unit" data-aos="fade-up" data-aos-delay="100">
-        <div class="image-stage">
+      <div class="topic-mini-card" data-aos="fade-up" data-aos-delay="50">
+        <div class="mini-img-box">
           <img src="icon topic2.png" alt="Topic 2">
         </div>
-        <div class="topic-details">
-          <h3>Science</h3>
-          <a href="topic2.pdf" target="_blank" class="open-btn">ACCESS</a>
-        </div>
+        <h3>Science</h3>
+        <a href="topic2.pdf" target="_blank" class="access-btn">Initialize</a>
       </div>
 
       <!-- Topic 3 -->
-      <div class="topic-unit" data-aos="fade-up" data-aos-delay="200">
-        <div class="image-stage">
+      <div class="topic-mini-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="mini-img-box">
           <img src="icon topic3.png" alt="Topic 3">
         </div>
-        <div class="topic-details">
-          <h3>Sports</h3>
-          <a href="topic3.pdf" target="_blank" class="open-btn">ACCESS</a>
-        </div>
+        <h3>Sports</h3>
+        <a href="topic3.pdf" target="_blank" class="access-btn">Initialize</a>
       </div>
 
       <!-- Topic 4 -->
-      <div class="topic-unit" data-aos="fade-up" data-aos-delay="300">
-        <div class="image-stage">
+      <div class="topic-mini-card" data-aos="fade-up" data-aos-delay="150">
+        <div class="mini-img-box">
           <img src="icon topic4.png" alt="Topic 4">
         </div>
-        <div class="topic-details">
-          <h3>Arts</h3>
-          <a href="topic4.pdf" target="_blank" class="open-btn">ACCESS</a>
-        </div>
+        <h3>Arts</h3>
+        <a href="topic4.pdf" target="_blank" class="access-btn">Initialize</a>
       </div>
 
       <!-- Topic 5 -->
-      <div class="topic-unit" data-aos="fade-up" data-aos-delay="400">
-        <div class="image-stage">
+      <div class="topic-mini-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="mini-img-box">
           <img src="icon topic5.png" alt="Topic 5">
         </div>
-        <div class="topic-details">
-          <h3>History</h3>
-          <a href="topic5.pdf" target="_blank" class="open-btn">ACCESS</a>
-        </div>
+        <h3>History</h3>
+        <a href="topic5.pdf" target="_blank" class="access-btn">Initialize</a>
       </div>
 
       <!-- Topic 6 -->
-      <div class="topic-unit" data-aos="fade-up" data-aos-delay="500">
-        <div class="image-stage">
+      <div class="topic-mini-card" data-aos="fade-up" data-aos-delay="250">
+        <div class="mini-img-box">
           <img src="icon topic6.png" alt="Topic 6">
         </div>
-        <div class="topic-details">
-          <h3>Future</h3>
-          <a href="topic6.pdf" target="_blank" class="open-btn">ACCESS</a>
-        </div>
+        <h3>Future</h3>
+        <a href="topic6.pdf" target="_blank" class="access-btn">Initialize</a>
       </div>
 
-    </div>
-    
-    <div class="section-nav">
-      <a href="#" class="nav-back" onclick="goHome(event)"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
     </div>
   </section>
 
-  <!-- ABOUT SECTION -->
+  <!-- ABOUT -->
   <section id="about" class="page">
-    <div class="about-container" data-aos="flip-up">
-      <h2 style="margin-bottom:30px">About the Project</h2>
+    <h2 style="font-family:'Syncopate'; text-align:center; margin-bottom:40px; font-size:1.5rem;">System Info</h2>
+    <div class="wide-text-box" data-aos="zoom-in">
       <p>
-        <strong>The Spotlight Magazine 9D</strong> represents the collective creativity of Manor House International School students.
-        <br><br>
-        We believe in pushing boundaries. This digital experience serves as a hub for our research, designs, and visions for the future.
+        <strong>IDENTITY:</strong> The Spotlight Magazine 9D<br>
+        <strong>SOURCE:</strong> Manor House International School<br><br>
+        This interface provides access to student-curated articles ranging from cutting-edge technology to artistic expression.
+        Designed for clarity, speed, and immersion.
       </p>
-      <div class="section-nav">
-        <a href="#" class="nav-back" onclick="goHome(event)"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
-      </div>
+    </div>
+    <div style="text-align:center; margin-top:40px;">
+      <a href="#" class="back-link" onclick="goHome(event)">[ Return to Dashboard ]</a>
     </div>
   </section>
 
 </main>
 
 <!-- Fixed Beta Button -->
-<a href="The Spotlight Magazine.pdf" target="_blank" class="beta-pill">
-  BETA (TILL-NOW)
+<a href="The Spotlight Magazine.pdf" target="_blank" class="beta-tag">
+  Beta (Till-Now) <i class="fa-solid fa-arrow-right"></i>
 </a>
 
 <script>
-  AOS.init({ duration: 1000, once: false });
+AOS.init({ duration: 600, once: false });
 
-  const pages = {
-    home: document.getElementById('home'),
-    topics: document.getElementById('topics'),
-    about: document.getElementById('about')
-  };
+const pages = {
+  home: document.getElementById('home'),
+  topics: document.getElementById('topics'),
+  about: document.getElementById('about')
+};
 
-  function show(id) {
-    // Hide all
-    Object.values(pages).forEach(el => {
-      el.style.opacity = '0';
-      setTimeout(() => el.classList.remove('active'), 300);
-    });
+function show(id) {
+  Object.values(pages).forEach(el => el.classList.remove('active'));
+  setTimeout(() => {
+    pages[id].classList.add('active');
+    AOS.refresh();
+  }, 100);
+}
 
-    // Show Target
-    setTimeout(() => {
-      pages[id].classList.add('active');
-      setTimeout(() => pages[id].style.opacity = '1', 50);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      AOS.refresh();
-    }, 300);
-  }
+document.getElementById('btnTopics').onclick = () => show('topics');
+document.getElementById('btnAbout').onclick = () => show('about');
 
-  document.getElementById('btnTopics').addEventListener('click', () => show('topics'));
-  document.getElementById('btnAbout').addEventListener('click', () => show('about'));
-  
-  function goHome(e) {
-    if(e) e.preventDefault();
-    show('home');
-  }
+function goHome(e) {
+  e.preventDefault();
+  show('home');
+}
 </script>
-
 </body>
 </html>
