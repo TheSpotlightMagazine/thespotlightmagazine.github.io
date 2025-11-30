@@ -8,282 +8,330 @@
 <!-- Animations -->
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<!-- Fonts & Icons -->
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+<!-- Creative Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 :root {
-  --bg: #050505;
-  --card-bg: rgba(20, 20, 25, 0.6);
-  --primary: #00f2ff; /* Cyan Neon */
-  --accent: #ff0055; /* Pink Neon */
-  --text: #ffffff;
-  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --bg-dark: #030014;
+  --glass: rgba(20, 20, 35, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --primary: #00d2ff; /* Cyber Blue */
+  --secondary: #9d00ff; /* Neon Purple */
+  --accent: #ff0055; /* Hot Pink */
+  --text-main: #ffffff;
+  --text-mute: #a1a1aa;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: 'Space Grotesk', sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
   overflow-x: hidden;
   min-height: 100vh;
-  /* Grid Background Animation */
-  background-image: 
-    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
+  /* Wide Animated Background */
+  background: radial-gradient(circle at top center, #1a0b2e 0%, #030014 70%);
+}
+
+/* Animated Background Mesh */
+.bg-mesh {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: -1;
+  background: 
+    linear-gradient(90deg, rgba(157, 0, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(rgba(157, 0, 255, 0.05) 1px, transparent 1px);
+  background-size: 80px 80px;
   perspective: 1000px;
+  transform-style: preserve-3d;
+  animation: meshMove 60s linear infinite;
 }
-
-/* Floating Ambient Glow */
-body::before {
-  content: '';
-  position: fixed;
-  top: -20%; left: -10%;
-  width: 50vw; height: 50vw;
-  background: radial-gradient(circle, rgba(0, 242, 255, 0.15), transparent 70%);
-  filter: blur(80px);
-  z-index: -1;
-  animation: floatGlow 10s infinite alternate;
+@keyframes meshMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(80px); }
 }
-body::after {
-  content: '';
-  position: fixed;
-  bottom: -20%; right: -10%;
-  width: 50vw; height: 50vw;
-  background: radial-gradient(circle, rgba(255, 0, 85, 0.1), transparent 70%);
-  filter: blur(80px);
-  z-index: -1;
-  animation: floatGlow 10s infinite alternate-reverse;
-}
-
-@keyframes floatGlow { from { transform: translate(0,0); } to { transform: translate(20px, 20px); } }
 
 /* HEADER */
 header {
-  text-align: center;
-  padding: 40px 20px;
-  animation: fadeInDown 1s ease;
-}
-header img {
-  max-height: 100px;
-  filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.4));
-  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 5vw;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10;
 }
 
-/* NAVIGATION / MAIN MENU */
+.logo-area img {
+  height: 60px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(157, 0, 255, 0.4);
+}
+
+.header-badge {
+  background: rgba(255,255,255,0.05);
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* MAIN CONTAINER - WIDE LAYOUT */
 main {
-  max-width: 1200px;
+  width: 90vw; /* Uses 90% of screen width */
+  max-width: 1600px; /* Stops it getting too crazy on huge screens */
   margin: 0 auto;
-  padding: 20px;
-  min-height: 60vh;
+  padding-top: 120px;
+  padding-bottom: 100px;
+  min-height: 100vh;
 }
 
-.page { display: none; animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-.page.active { display: block; }
+.page { display: none; opacity: 0; transition: opacity 0.5s ease; }
+.page.active { display: block; opacity: 1; }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(40px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+/* HOME HERO SECTION */
+.hero-content {
+  text-align: center;
+  padding: 50px 0;
 }
 
 h2 {
-  font-size: 3rem;
-  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 4vw; /* Responsive big text */
   text-transform: uppercase;
-  letter-spacing: 4px;
-  margin-bottom: 50px;
-  background: linear-gradient(to right, #fff, #888);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  background: linear-gradient(to right, #fff, var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(0, 210, 255, 0.3);
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: var(--text-mute);
+  margin-bottom: 60px;
+  font-weight: 300;
+}
+
+/* WIDE MENU GRID */
+.wide-menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.menu-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+  border: 1px solid var(--glass-border);
+  padding: 50px 30px;
+  border-radius: 30px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 4px;
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  opacity: 0.5;
+  transition: 0.3s;
+}
+
+.menu-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.menu-card i {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  background: linear-gradient(to bottom, var(--primary), var(--secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* HOME BUTTONS (Futuristic) */
-.menu-grid {
+.menu-card h3 { font-family: 'Orbitron'; font-size: 1.5rem; margin: 0; }
+.menu-card p { color: var(--text-mute); font-size: 1.1rem; margin-top: 10px; }
+
+/* TOPICS - PANORAMIC GRID */
+.topic-display {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-}
-
-.menu-btn {
-  position: relative;
-  background: var(--card-bg);
-  border: var(--glass-border);
-  padding: 40px 20px;
-  border-radius: 20px;
-  text-align: center;
-  text-decoration: none;
-  color: white;
-  transition: 0.3s;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.menu-btn::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; width: 4px; height: 100%;
-  background: var(--primary);
-  opacity: 0;
-  transition: 0.3s;
-}
-
-.menu-btn:hover {
-  transform: translateY(-5px);
-  background: rgba(255,255,255,0.05);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-}
-.menu-btn:hover::before { opacity: 1; }
-
-.menu-btn i { font-size: 2.5rem; color: var(--primary); margin-bottom: 15px; }
-.menu-btn span { display: block; font-size: 1.4rem; font-weight: 700; letter-spacing: 1px; }
-
-/* --- NEW TOPIC CARD DESIGN --- */
-.topic-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); /* Wider cards */
   gap: 40px;
 }
 
-.topic-card {
-  background: rgba(10, 10, 12, 0.7);
-  border: 1px solid rgba(255,255,255,0.08);
+.topic-unit {
+  background: rgba(15, 15, 25, 0.6);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border);
   border-radius: 24px;
-  padding: 0; /* No padding on container to let elements breathe */
+  overflow: hidden;
+  transition: 0.4s;
   display: flex;
   flex-direction: column;
-  align-items: center;
   position: relative;
-  transition: transform 0.4s, box-shadow 0.4s;
-  backdrop-filter: blur(10px);
-  overflow: hidden;
 }
 
-.topic-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 0 30px rgba(0, 242, 255, 0.15);
-  border-color: rgba(0, 242, 255, 0.3);
+.topic-unit:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 30px rgba(0, 210, 255, 0.15);
+  transform: translateY(-5px);
 }
 
-/* The Image Area - No more boxy constraints */
-.img-wrapper {
+/* Image Container - The "Stage" */
+.image-stage {
+  height: 250px;
   width: 100%;
-  height: 220px; /* Fixed height for uniformity */
+  background: radial-gradient(circle at center, rgba(0, 210, 255, 0.05) 0%, transparent 70%);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 70%);
   position: relative;
-  padding: 20px;
 }
 
-.topic-card img {
-  max-width: 100%; 
-  max-height: 100%; 
-  width: auto; 
-  height: auto;
-  object-fit: contain; /* Keeps image natural shape, no cropping! */
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-  transition: transform 0.4s;
-  z-index: 2;
+.image-stage img {
+  max-height: 80%;
+  max-width: 80%;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
+  animation: levitate 4s ease-in-out infinite; /* Floating Animation */
 }
 
-.topic-card:hover img {
-  transform: scale(1.1) translateY(-5px);
+@keyframes levitate {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
 }
 
-/* Content Area */
-.content-wrapper {
-  padding: 20px 30px 30px 30px;
-  text-align: center;
-  width: 100%;
-  z-index: 2;
-}
-
-.topic-card h3 {
-  color: var(--primary);
-  font-size: 1.5rem;
-  margin: 0 0 15px 0;
-  text-transform: uppercase;
-}
-
-.topic-btn {
-  display: inline-block;
-  padding: 12px 30px;
-  border: 1px solid var(--primary);
-  color: var(--primary);
-  text-decoration: none;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  transition: 0.3s;
-  background: transparent;
-}
-
-.topic-card:hover .topic-btn {
-  background: var(--primary);
-  color: #000;
-  box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
-}
-
-/* BACK BUTTONS */
-.nav-actions {
-  text-align: center;
-  margin-top: 60px;
-}
-.back-link {
-  color: #888;
-  text-decoration: none;
-  font-size: 1.1rem;
-  border-bottom: 1px solid transparent;
-  transition: 0.3s;
-  padding-bottom: 5px;
-}
-.back-link:hover {
-  color: white;
-  border-color: var(--primary);
-}
-
-/* BETA BUTTON (Fixed Bottom Right) */
-.beta-float {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background: rgba(0, 0, 0, 0.8);
-  border: 1px solid var(--accent);
-  color: var(--text);
-  padding: 15px 30px;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
-  backdrop-filter: blur(10px);
-  z-index: 100;
-  transition: 0.3s;
+/* Topic Details */
+.topic-details {
+  padding: 25px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.4));
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--glass-border);
+}
+
+.topic-details h3 {
+  margin: 0;
+  font-family: 'Orbitron';
+  font-size: 1.4rem;
+  color: var(--primary);
+}
+
+.open-btn {
+  background: transparent;
+  border: 1px solid var(--text-main);
+  color: var(--text-main);
+  padding: 10px 24px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.open-btn:hover {
+  background: var(--text-main);
+  color: black;
+  box-shadow: 0 0 20px rgba(255,255,255,0.4);
+}
+
+/* ABOUT TEXT */
+.about-container {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 30px;
+  padding: 60px;
+  text-align: center;
+  max-width: 900px;
+  margin: auto;
+}
+.about-container p { font-size: 1.4rem; line-height: 1.8; }
+
+/* NAVIGATION FOOTER (Inside Main) */
+.section-nav {
+  margin-top: 80px;
+  text-align: center;
+}
+.nav-back {
+  display: inline-flex;
   align-items: center;
   gap: 10px;
+  color: var(--text-mute);
+  text-decoration: none;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+.nav-back:hover {
+  background: rgba(255,255,255,0.1);
+  color: white;
 }
 
-.beta-float:hover {
-  transform: scale(1.05);
+/* BETA BUTTON */
+.beta-pill {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(10px);
+  border: 2px solid var(--secondary);
+  color: var(--text-main);
+  padding: 15px 35px;
+  border-radius: 100px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 2px;
+  transition: 0.3s;
+  z-index: 999;
+  box-shadow: 0 0 15px rgba(157, 0, 255, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.beta-pill::before {
+  content: '';
+  width: 8px; height: 8px;
   background: var(--accent);
-  box-shadow: 0 0 40px rgba(255, 0, 85, 0.6);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent);
+  animation: blink 2s infinite;
 }
 
-footer { text-align: center; color: #555; padding: 40px; margin-top: 40px; }
-audio { display: none; }
+.beta-pill:hover {
+  background: var(--secondary);
+  color: white;
+  box-shadow: 0 0 40px rgba(157, 0, 255, 0.6);
+  transform: scale(1.05);
+}
 
-/* Responsive */
-@media (max-width: 600px) {
-  h2 { font-size: 2rem; }
-  .beta-float { padding: 10px 20px; font-size: 0.8rem; bottom: 20px; right: 20px; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+/* Mobile */
+@media(max-width: 768px) {
+  main { width: 95vw; padding-top: 100px; }
+  h2 { font-size: 2.5rem; }
+  .topic-display { grid-template-columns: 1fr; }
+  .beta-pill { padding: 12px 20px; bottom: 20px; right: 20px; font-size: 0.8rem; }
 }
 </style>
 </head>
@@ -293,168 +341,188 @@ audio { display: none; }
   <source src="bg audio.mp3" type="audio/mpeg">
 </audio>
 
+<!-- Background Mesh -->
+<div class="bg-mesh"></div>
+
 <header>
-  <img src="The spotlight magazine.png" alt="Spotlight Magazine">
+  <div class="logo-area">
+    <img src="The spotlight magazine.png" alt="Logo">
+  </div>
+  <div class="header-badge">Vol. 9D</div>
 </header>
 
 <main>
-  <!-- HOME -->
+  
+  <!-- HOME SECTION -->
   <section id="home" class="page active">
-    <h2 data-aos="zoom-in">Main Dashboard</h2>
-    <div class="menu-grid" data-aos="fade-up">
+    <div class="hero-content" data-aos="zoom-out">
+      <h2>The Spotlight Magazine</h2>
+      <p class="subtitle">Intersection of Design, Future & Innovation</p>
       
-      <!-- 1. Full Magazine -->
-      <a href="The Spotlight Magazine.pdf" target="_blank" class="menu-btn">
-        <i class="fa-solid fa-book-open"></i>
-        <span>Open Magazine</span>
-      </a>
+      <div class="wide-menu">
+        <a href="The Spotlight Magazine.pdf" target="_blank" class="menu-card">
+          <i class="fa-solid fa-book-journal-whills"></i>
+          <h3>Full Issue</h3>
+          <p>Read the complete magazine</p>
+        </a>
+        
+        <div class="menu-card" id="btnTopics" style="cursor: pointer;">
+          <i class="fa-solid fa-cubes-stacked"></i>
+          <h3>Topic Index</h3>
+          <p>Browse individual articles</p>
+        </div>
 
-      <!-- 2. Topics -->
-      <div class="menu-btn" id="openTopics">
-        <i class="fa-solid fa-layer-group"></i>
-        <span>Browse Topics</span>
+        <a href="The Spotlight Magazine.ppt" target="_blank" class="menu-card">
+          <i class="fa-solid fa-presentation-screen"></i>
+          <h3>Presentation</h3>
+          <p>View the slides</p>
+        </a>
+
+        <div class="menu-card" id="btnAbout" style="cursor: pointer;">
+          <i class="fa-solid fa-users-rays"></i>
+          <h3>About 9D</h3>
+          <p>Meet the team</p>
+        </div>
       </div>
-
-      <!-- 3. Presentation -->
-      <a href="The Spotlight Magazine.ppt" target="_blank" class="menu-btn">
-        <i class="fa-solid fa-tv"></i>
-        <span>Presentation</span>
-      </a>
-
-      <!-- 4. About -->
-      <div class="menu-btn" id="openAbout">
-        <i class="fa-solid fa-circle-info"></i>
-        <span>About 9D</span>
-      </div>
-
     </div>
   </section>
 
-  <!-- TOPICS -->
+  <!-- TOPICS SECTION -->
   <section id="topics" class="page">
-    <h2>Select a Topic</h2>
-    <div class="topic-grid">
+    <div data-aos="fade-down">
+      <h2 style="text-align:left; font-size: 3rem;">Topic Index</h2>
+    </div>
+    
+    <div class="topic-display">
       
       <!-- Topic 1 -->
-      <div class="topic-card" data-aos="fade-up">
-        <div class="img-wrapper">
-          <!-- The image will now fit naturally without being cropped -->
-          <img src="icon topic1.png" alt="Technology">
+      <div class="topic-unit" data-aos="fade-up">
+        <div class="image-stage">
+          <img src="icon topic1.png" alt="Tech Icon">
         </div>
-        <div class="content-wrapper">
+        <div class="topic-details">
           <h3>Technology</h3>
-          <a href="technology.pdf" target="_blank" class="topic-btn">OPEN FILE</a>
+          <a href="technology.pdf" target="_blank" class="open-btn">ACCESS</a>
         </div>
       </div>
 
       <!-- Topic 2 -->
-      <div class="topic-card" data-aos="fade-up" data-aos-delay="100">
-        <div class="img-wrapper">
+      <div class="topic-unit" data-aos="fade-up" data-aos-delay="100">
+        <div class="image-stage">
           <img src="icon topic2.png" alt="Topic 2">
         </div>
-        <div class="content-wrapper">
+        <div class="topic-details">
           <h3>Science</h3>
-          <a href="topic2.pdf" target="_blank" class="topic-btn">OPEN FILE</a>
+          <a href="topic2.pdf" target="_blank" class="open-btn">ACCESS</a>
         </div>
       </div>
 
       <!-- Topic 3 -->
-      <div class="topic-card" data-aos="fade-up" data-aos-delay="200">
-        <div class="img-wrapper">
+      <div class="topic-unit" data-aos="fade-up" data-aos-delay="200">
+        <div class="image-stage">
           <img src="icon topic3.png" alt="Topic 3">
         </div>
-        <div class="content-wrapper">
+        <div class="topic-details">
           <h3>Sports</h3>
-          <a href="topic3.pdf" target="_blank" class="topic-btn">OPEN FILE</a>
+          <a href="topic3.pdf" target="_blank" class="open-btn">ACCESS</a>
         </div>
       </div>
 
       <!-- Topic 4 -->
-      <div class="topic-card" data-aos="fade-up" data-aos-delay="300">
-        <div class="img-wrapper">
+      <div class="topic-unit" data-aos="fade-up" data-aos-delay="300">
+        <div class="image-stage">
           <img src="icon topic4.png" alt="Topic 4">
         </div>
-        <div class="content-wrapper">
+        <div class="topic-details">
           <h3>Arts</h3>
-          <a href="topic4.pdf" target="_blank" class="topic-btn">OPEN FILE</a>
+          <a href="topic4.pdf" target="_blank" class="open-btn">ACCESS</a>
         </div>
       </div>
 
-       <!-- Topic 5 -->
-       <div class="topic-card" data-aos="fade-up" data-aos-delay="400">
-        <div class="img-wrapper">
+      <!-- Topic 5 -->
+      <div class="topic-unit" data-aos="fade-up" data-aos-delay="400">
+        <div class="image-stage">
           <img src="icon topic5.png" alt="Topic 5">
         </div>
-        <div class="content-wrapper">
+        <div class="topic-details">
           <h3>History</h3>
-          <a href="topic5.pdf" target="_blank" class="topic-btn">OPEN FILE</a>
+          <a href="topic5.pdf" target="_blank" class="open-btn">ACCESS</a>
         </div>
       </div>
 
-       <!-- Topic 6 -->
-       <div class="topic-card" data-aos="fade-up" data-aos-delay="500">
-        <div class="img-wrapper">
+      <!-- Topic 6 -->
+      <div class="topic-unit" data-aos="fade-up" data-aos-delay="500">
+        <div class="image-stage">
           <img src="icon topic6.png" alt="Topic 6">
         </div>
-        <div class="content-wrapper">
+        <div class="topic-details">
           <h3>Future</h3>
-          <a href="topic6.pdf" target="_blank" class="topic-btn">OPEN FILE</a>
+          <a href="topic6.pdf" target="_blank" class="open-btn">ACCESS</a>
         </div>
       </div>
 
     </div>
-    <div class="nav-actions">
-      <a href="#" id="backFromTopics" class="back-link">← Return Home</a>
+    
+    <div class="section-nav">
+      <a href="#" class="nav-back" onclick="goHome(event)"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
     </div>
   </section>
 
-  <!-- ABOUT -->
+  <!-- ABOUT SECTION -->
   <section id="about" class="page">
-    <h2>About 9D Spotlight</h2>
-    <div style="background:var(--card-bg); padding:40px; border-radius:20px; border:var(--glass-border); text-align:center; max-width:800px; margin:auto; line-height:1.8; font-size:1.2rem;">
+    <div class="about-container" data-aos="flip-up">
+      <h2 style="margin-bottom:30px">About the Project</h2>
       <p>
-        Welcome to the digital edition of <strong>The Spotlight Magazine</strong>. 
-        Created by the students of Grade 9D at Manor House International School. 
-        This project represents our journey through modern technology, creative design, and collaborative effort.
+        <strong>The Spotlight Magazine 9D</strong> represents the collective creativity of Manor House International School students.
+        <br><br>
+        We believe in pushing boundaries. This digital experience serves as a hub for our research, designs, and visions for the future.
       </p>
-    </div>
-    <div class="nav-actions">
-      <a href="#" id="backFromAbout" class="back-link">← Return Home</a>
+      <div class="section-nav">
+        <a href="#" class="nav-back" onclick="goHome(event)"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+      </div>
     </div>
   </section>
 
 </main>
 
-<footer>© 2025 The Spotlight Magazine 9D. All Rights Reserved.</footer>
-
-<!-- FIXED BETA BUTTON (Links to Full File) -->
-<a href="The Spotlight Magazine.pdf" target="_blank" class="beta-float">
-  <i class="fa-solid fa-bolt"></i> BETA (TILL-NOW)
+<!-- Fixed Beta Button -->
+<a href="The Spotlight Magazine.pdf" target="_blank" class="beta-pill">
+  BETA (TILL-NOW)
 </a>
 
 <script>
-AOS.init({ duration: 800, once: false });
+  AOS.init({ duration: 1000, once: false });
 
-const pages = {
-  home: document.getElementById('home'),
-  topics: document.getElementById('topics'),
-  about: document.getElementById('about')
-};
+  const pages = {
+    home: document.getElementById('home'),
+    topics: document.getElementById('topics'),
+    about: document.getElementById('about')
+  };
 
-function goTo(pageName) {
-  Object.values(pages).forEach(p => p.classList.remove('active'));
-  window.scrollTo({top:0, behavior:'smooth'});
+  function show(id) {
+    // Hide all
+    Object.values(pages).forEach(el => {
+      el.style.opacity = '0';
+      setTimeout(() => el.classList.remove('active'), 300);
+    });
+
+    // Show Target
+    setTimeout(() => {
+      pages[id].classList.add('active');
+      setTimeout(() => pages[id].style.opacity = '1', 50);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      AOS.refresh();
+    }, 300);
+  }
+
+  document.getElementById('btnTopics').addEventListener('click', () => show('topics'));
+  document.getElementById('btnAbout').addEventListener('click', () => show('about'));
   
-  setTimeout(() => {
-    pages[pageName].classList.add('active');
-    AOS.refresh();
-  }, 200);
-}
-
-document.getElementById('openTopics').onclick = () => goTo('topics');
-document.getElementById('openAbout').onclick = () => goTo('about');
-document.getElementById('backFromTopics').onclick = (e) => { e.preventDefault(); goTo('home'); };
-document.getElementById('backFromAbout').onclick = (e) => { e.preventDefault(); goTo('home'); };
+  function goHome(e) {
+    if(e) e.preventDefault();
+    show('home');
+  }
 </script>
+
 </body>
 </html>
