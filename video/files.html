@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Separated Files – History of Cars</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --water: rgba(180,220,255,0.18);
+    --blur-glass: rgba(220,240,255,0.12);
+    --border-glass: rgba(200,230,255,0.28);
+    --deep: #0a1628;
+    --accent: #5bc8f5;
+    --accent2: #a0d8f1;
+    --white: #e8f4ff;
+    --text-dim: rgba(180,210,240,0.65);
+    --card-hover: rgba(91,200,245,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Raleway', sans-serif;
+    background: var(--deep);
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--white);
+  }
+
+  .bg-layer {
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 15% 25%, rgba(20,80,160,0.4) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 80% at 85% 65%, rgba(10,120,200,0.3) 0%, transparent 70%),
+      radial-gradient(ellipse 100% 100% at 50% 50%, #0a1628 60%, #071020 100%);
+  }
+  .bubble {
+    position: fixed; border-radius: 50%; filter: blur(70px); z-index: 0; pointer-events: none;
+    animation: float 16s ease-in-out infinite;
+  }
+  .b1{width:350px;height:350px;background:rgba(30,120,210,0.14);top:0%;left:5%;animation-delay:0s;}
+  .b2{width:200px;height:200px;background:rgba(91,200,245,0.10);top:50%;left:80%;animation-delay:-5s;}
+  .b3{width:240px;height:240px;background:rgba(0,100,200,0.12);top:80%;left:30%;animation-delay:-9s;}
+  @keyframes float{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-28px) scale(1.05);}}
+
+  .wave {
+    position: fixed; bottom: 0; left: 0; width: 200%; height: 120px; z-index: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='rgba(91,200,245,0.06)' d='M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;
+    animation: wave1 10s linear infinite;
+  }
+  @keyframes wave1{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ─── Layout ─── */
+  .container {
+    position: relative; z-index: 1;
+    max-width: 1100px; margin: 0 auto;
+    padding: 52px 24px 100px;
+  }
+
+  /* ─── Header ─── */
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--accent2); text-decoration: none;
+    font-family: 'Space Mono', monospace; font-size: .78rem;
+    letter-spacing: .08em; margin-bottom: 36px;
+    opacity: .8; transition: opacity .2s;
+  }
+  .back-btn:hover { opacity: 1; }
+
+  header { text-align: center; margin-bottom: 52px; animation: fadeDown .8s ease both; }
+  .tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace; font-size: .7rem;
+    letter-spacing: .18em; text-transform: uppercase;
+    background: rgba(91,200,245,0.1); border: 1px solid rgba(91,200,245,0.3);
+    color: var(--accent); padding: 5px 16px; border-radius: 100px; margin-bottom: 16px;
+  }
+  h1 {
+    font-size: clamp(1.8rem,5vw,2.8rem); font-weight: 900; line-height: 1.1;
+    background: linear-gradient(135deg,#e8f4ff 30%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+  }
+  .subtitle { font-size: .9rem; color: var(--text-dim); font-weight: 300; }
+  .divider { width:50px;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:18px auto 0;border-radius:2px; }
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ─── Grid ─── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  /* ─── Card ─── */
+  .card {
+    background: var(--blur-glass);
+    border: 1px solid var(--border-glass);
+    backdrop-filter: blur(20px) saturate(1.3);
+    -webkit-backdrop-filter: blur(20px) saturate(1.3);
+    border-radius: 20px; padding: 26px 24px 22px;
+    display: flex; flex-direction: column; gap: 14px;
+    position: relative; overflow: hidden;
+    animation: fadeUp .7s ease both;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background: linear-gradient(90deg, transparent, rgba(91,200,245,0.4), transparent);
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(91,200,245,0.15);
+    border-color: rgba(91,200,245,0.45);
+    background: var(--card-hover);
+  }
+
+  /* staggered animation */
+  .card:nth-child(1){animation-delay:.05s} .card:nth-child(2){animation-delay:.10s}
+  .card:nth-child(3){animation-delay:.15s} .card:nth-child(4){animation-delay:.20s}
+  .card:nth-child(5){animation-delay:.25s} .card:nth-child(6){animation-delay:.30s}
+  .card:nth-child(7){animation-delay:.35s} .card:nth-child(8){animation-delay:.40s}
+  .card:nth-child(9){animation-delay:.45s} .card:nth-child(10){animation-delay:.50s}
+  .card:nth-child(11){animation-delay:.55s} .card:nth-child(12){animation-delay:.60s}
+  .card:nth-child(13){animation-delay:.65s} .card:nth-child(14){animation-delay:.70s}
+  .card:nth-child(15){animation-delay:.75s} .card:nth-child(16){animation-delay:.80s}
+  .card:nth-child(17){animation-delay:.85s} .card:nth-child(18){animation-delay:.90s}
+  .card:nth-child(19){animation-delay:.95s} .card:nth-child(20){animation-delay:1.00s}
+  .card:nth-child(21){animation-delay:1.05s}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Card header row */
+  .card-header {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
+  }
+  .card-num {
+    font-family: 'Space Mono', monospace; font-size: .7rem;
+    color: var(--accent); background: rgba(91,200,245,0.1);
+    border: 1px solid rgba(91,200,245,0.25);
+    padding: 3px 9px; border-radius: 100px; white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .info-btn {
+    background: rgba(91,200,245,0.1); border: 1px solid rgba(91,200,245,0.28);
+    color: var(--accent); font-size: .75rem; font-family: 'Space Mono', monospace;
+    padding: 4px 11px; border-radius: 8px; cursor: pointer;
+    transition: background .2s, border-color .2s; flex-shrink: 0;
+  }
+  .info-btn:hover { background: rgba(91,200,245,0.22); border-color: rgba(91,200,245,0.6); }
+
+  .card-title {
+    font-size: .97rem; font-weight: 700; line-height: 1.35;
+    color: var(--white);
+  }
+  .card-creator {
+    font-size: .78rem; color: var(--text-dim);
+    font-family: 'Space Mono', monospace;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .card-creator::before {
+    content: ''; display: inline-block;
+    width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(91,200,245,0.4), rgba(30,100,200,0.4));
+    border: 1px solid rgba(91,200,245,0.3);
+  }
+
+  /* Card footer */
+  .card-footer { margin-top: auto; }
+  .dl-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 18px; border-radius: 10px;
+    font-family: 'Raleway', sans-serif; font-weight: 700; font-size: .82rem;
+    cursor: pointer; text-decoration: none; width: 100%; justify-content: center;
+    background: rgba(255,255,255,0.04); border: 1.5px solid var(--border-glass);
+    color: var(--accent2); transition: all .22s ease;
+  }
+  .dl-btn:hover {
+    background: rgba(91,200,245,0.1); border-color: rgba(91,200,245,0.4);
+    transform: translateY(-1px);
+  }
+  .dl-btn.disabled {
+    opacity: .35; pointer-events: none; cursor: not-allowed;
+  }
+
+  /* Modal overlay */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    background: rgba(5,14,30,0.7); backdrop-filter: blur(8px);
+    justify-content: center; align-items: center; padding: 24px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: rgba(14,32,64,0.92); border: 1px solid rgba(91,200,245,0.35);
+    backdrop-filter: blur(30px); border-radius: 20px;
+    padding: 34px 32px; max-width: 440px; width: 100%;
+    position: relative; animation: modalIn .3s ease both;
+  }
+  @keyframes modalIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+  .modal::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background: linear-gradient(90deg, transparent, rgba(91,200,245,0.55), transparent);
+  }
+  .modal-close {
+    position: absolute; top: 14px; right: 16px;
+    background: rgba(91,200,245,0.1); border: 1px solid rgba(91,200,245,0.25);
+    color: var(--accent2); font-size: 1rem; cursor: pointer;
+    width: 30px; height: 30px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  .modal-close:hover { background: rgba(91,200,245,0.22); }
+  .modal-num { font-family:'Space Mono',monospace; font-size:.7rem; color:var(--accent); margin-bottom:10px; }
+  .modal-title { font-size:1.15rem; font-weight:800; margin-bottom:12px; }
+  .modal-info { font-size:.9rem; color:var(--text-dim); line-height:1.65; }
+  .modal-divider { height:1px; background: rgba(91,200,245,0.15); margin: 16px 0; }
+  .modal-creator-label { font-size:.72rem; color:var(--accent); font-family:'Space Mono',monospace; letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; }
+  .modal-creator-name { font-size:.92rem; font-weight:600; }
+
+  footer {
+    text-align:center; margin-top:60px; font-size:.75rem;
+    color:var(--text-dim); font-family:'Space Mono',monospace; opacity:.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="bubble b1"></div>
+<div class="bubble b2"></div>
+<div class="bubble b3"></div>
+<div class="wave"></div>
+
+<div class="container">
+
+  <a href="index.html" class="back-btn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to main
+  </a>
+
+  <header>
+    <div class="tag">Files</div>
+    <h1>Separated Files</h1>
+    <p class="subtitle">21 topics — tap a card to download or view info</p>
+    <div class="divider"></div>
+  </header>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>ICT Project &nbsp;·&nbsp; History of Cars &nbsp;·&nbsp; Grade 9 IGCSE</footer>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-num" id="mNum"></div>
+    <div class="modal-title" id="mTitle"></div>
+    <div class="modal-info" id="mInfo"></div>
+    <div class="modal-divider"></div>
+    <div class="modal-creator-label">Created by</div>
+    <div class="modal-creator-name" id="mCreator"></div>
+  </div>
+</div>
+
+<script>
+const cards = [
+  {
+    num: 1, display: "1",
+    title: "Early Steam Cars (1769–1885)",
+    info: "First steam-powered vehicles. Inventor: Nicolas-Joseph Cugnot (France).",
+    creator: "Lamma Ehab",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/1.pdf"
+  },
+  {
+    num: 2, display: "2",
+    title: "First Gasoline Engines (1885–1893)",
+    info: "Karl Benz built the first practical gasoline car. Birth of internal combustion engines.",
+    creator: "Farida Hany",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/2.pdf"
+  },
+  {
+    num: 3, display: "3",
+    title: "Electric Cars Begin (1880s–1900s)",
+    info: "Early electric cars in cities. Quiet and easy to drive but limited range.",
+    creator: "Hamza Kotb",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/3.pdf"
+  },
+  {
+    num: 4, display: "4",
+    title: "Mass Production Era (1908–1920s)",
+    info: "Henry Ford's Model T & assembly line. Cars become affordable for middle class.",
+    creator: "Malek Wael",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/4.pdf"
+  },
+  {
+    num: 5, display: "5",
+    title: "Luxury & Design Innovations (1920s–1930s)",
+    info: "Streamlined designs, chrome, luxury interiors. Brands: Rolls-Royce, Cadillac. Cars faster, smoother, more reliable.",
+    creator: "Zainab Murtaza",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/5.pdf"
+  },
+  // No card 6
+  {
+    num: 7, display: "7",
+    title: "Post-War Boom & Affordable Cars (1945–1955)",
+    info: "After WWII, mass production resumes. Compact cars popular in Europe (VW Beetle).",
+    creator: "Jaida",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/7.pdf"
+  },
+  {
+    num: 8, display: "8",
+    title: "Safety Features Introduced (1950s–1960s)",
+    info: "Seat belts, better brakes, safety glass.",
+    creator: "Habiba Ahmed",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/8.pdf"
+  },
+  {
+    num: 9, display: "9",
+    title: "Muscle & Performance Cars (1960s)",
+    info: "Powerful engines, sporty designs. Example: Ford Mustang, Chevrolet Camaro.",
+    creator: "Kareem Amr",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/9.pdf"
+  },
+  {
+    num: 10, display: "10",
+    title: "Compact & Fuel-Efficient Cars (1970s)",
+    info: "Oil crisis → small cars become popular. Japanese brands rise (Toyota, Honda).",
+    creator: "Omar Ahmed",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/10.pdf"
+  },
+  {
+    num: 11, display: "11",
+    title: "Emission Controls & Environmental Awareness (1970s–1980s)",
+    info: "Catalytic converters, cleaner engines. Focus on reducing pollution.",
+    creator: "Malak Shehata",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/11.pdf"
+  },
+  {
+    num: 12, display: "12",
+    title: "Electronic Fuel Injection & Computers (1980s)",
+    info: "Cars use microprocessors for fuel & engine control. Better efficiency and reliability.",
+    creator: "Malek Hany",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/12.pdf"
+  },
+  {
+    num: 13, display: "13",
+    title: "Aerodynamics & Lightweight Materials (1980s–1990s)",
+    info: "Cars more fuel-efficient & faster due to design.",
+    creator: "Abdelwahab",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/13.pdf"
+  },
+  {
+    num: 14, display: "14",
+    title: "Luxury Electronics & Comfort (1990s)",
+    info: "Airbags, ABS brakes, climate control, GPS systems.",
+    creator: "Omar Kelany",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/14.pdf"
+  },
+  {
+    num: 15, display: "15",
+    title: "Hybrid Cars (1997–2000s)",
+    info: "Toyota Prius → first mass-produced hybrid. Combines gasoline + electric for efficiency.",
+    creator: "Ahmed Mohamed",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/15.pdf"
+  },
+  {
+    num: 16, display: "16",
+    title: "SUV & Crossover Boom (2000s)",
+    info: "Sport utility vehicles become extremely popular. Better safety and space.",
+    creator: "Rodina Ehab",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/16.pdf"
+  },
+  {
+    num: 17, display: "17",
+    title: "Electric Vehicles (EVs) Modern Era (2010s)",
+    info: "Tesla leads with high-performance EVs. Charging networks and battery tech improve.",
+    creator: "Amin Mahmoud",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/17.pdf"
+  },
+  {
+    num: 18, display: "18",
+    title: "Autonomous / Self-Driving Cars (2010s–2020s)",
+    info: "Advanced sensors & AI allow partial/full automation.",
+    creator: "Seifeldin Ahmed",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/18.pdf"
+  },
+  {
+    num: 19, display: "19",
+    title: "Connectivity & Smart Features (2010s–2020s)",
+    info: "Cars connected to internet, apps, navigation updates. Infotainment, remote control features.",
+    creator: "Mohamed Mostafa",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/19.pdf"
+  },
+  {
+    num: 20, display: "20",
+    title: "Green Materials & Sustainability (2020s)",
+    info: "Bioplastics, recycled materials, energy-efficient production.",
+    creator: "Matthew Fady",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/20.pdf"
+  },
+  {
+    num: 21, display: "21",
+    title: "Flying Cars & Concept Vehicles (2020s)",
+    info: "Prototypes of flying cars & hover vehicles. Experimental designs for future mobility.",
+    creator: "Youness Amer",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/21.pdf"
+  },
+  {
+    num: 22, display: "22",
+    title: "Future Autonomous & AI Integration (2030s and beyond)",
+    info: "Fully autonomous fleets, AI-assisted driving. Integration with smart cities & eco-friendly systems.",
+    creator: "Yahya Amer",
+    link: "https://huggingface.co/datasets/MidoSTM11/Mido/resolve/main/22.pdf"
+  }
+];
+
+const grid = document.getElementById('grid');
+
+cards.forEach((c, i) => {
+  const hasLink = c.link !== null;
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="card-header">
+      <span class="card-num">#${c.display}</span>
+      <button class="info-btn" onclick="openModal(${i})">ℹ info</button>
+    </div>
+    <div class="card-title">${c.title}</div>
+    <div class="card-creator">${c.creator}</div>
+    <div class="card-footer">
+      ${hasLink
+        ? `<a href="${c.link}" target="_blank" class="dl-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Open File
+          </a>`
+        : `<span class="dl-btn disabled">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            Not Available
+          </span>`
+      }
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+function openModal(i) {
+  const c = cards[i];
+  document.getElementById('mNum').textContent = `Topic #${c.display}`;
+  document.getElementById('mTitle').textContent = c.title;
+  document.getElementById('mInfo').textContent = c.info;
+  document.getElementById('mCreator').textContent = c.creator;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
